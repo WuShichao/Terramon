@@ -1,0 +1,401 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<!--<link rel="shortcut icon" href="https://ldas-jobs.ligo.caltech.edu/~hunter.gabbard/earthquake_mon/Teramon_logo.ico">-->
+		<title> Terramon </title> 
+		<!--<h3> <center>Terramon: A low-latency online earthquake monitoring system</center> </h3>-->
+		<style type="text/css">
+    		.fieldset-auto-width {
+         		display: inline-block;
+			margin-left: 32cm;
+			margin-right: 20cm;
+    		}
+		</style>
+			<script type="text/javascript">
+		
+		</script>
+		<meta http-equiv="refresh" content="180"> <!-- Refresh every 2 minutes -->
+		<img src="https://ldas-jobs.ligo.caltech.edu/~hunter.gabbard/earthquake_mon/Teramon_logo.gif" width=60px height=60px style="position: absolute; z-index: -1; top: 0px; left: 0px;">
+		<img src="https://ldas-jobs.ligo.caltech.edu/~hunter.gabbard/earthquake_mon/Teramon_logo.gif" width=60px height=60px style="position: absolute; z-index: -1; top: 0px; right: 0px;">
+	</head>
+
+	<body>
+		
+		<!--<h3><font color="red"> Terramon is currently experiencing downtime due to updates to system. Please be patient.</font> </h3>-->
+		<!--<h4> Daily archive of Terramon webpages can be found <a href="https://ldas-jobs.ligo.caltech.edu/~hunter.gabbard/earthquake_mon/daily_runs_archive/">here</a>: Daily archive of Terramon segments can be found <a href="https://ldas-jobs.ligo.caltech.edu/~hunter.gabbard/earthquake_mon/daily_veto_segments/">here</a>.</h4>-->
+		<h4 style="position: absolute; right: 10px;"> Jump to webpage guide <a href="#Bot">here</a>.</h4>
+			<script type="text/javascript">
+
+/*   Copyright 2007, Michael J. Hill.  Used with permission.  www.javascript-demos.com */
+/*   Free use of the code, so long as BOTH copyright notices are kept intact */
+
+// Customizations
+	var defaultMonth = 0;  // 1 displays next month onload, -6 displays six months ago
+	var hopMonths = 6; // number of months to "jump" for Fast Forward and Rewind buttons
+	var hopYears = 5;  // number of years to "jump"
+	var hiLiteToday = true;  // if and when current month is displayed
+	var floatTo = "right";  // right or left
+	var clickField = [];//Do not delete this line, the following lines are optional and you may have up to 7 fields
+	//clickField[0] = "contractDate,Order Received"; // fieldName,Description
+	//clickField[1] = "startAssembly,Started Assembly";
+	//clickField[2] = "endAssembly,Finished Assembly";
+	//clickField[3] = "dateShipped,Order Shipped";
+// End Customizations
+
+// Do not edit below this line
+
+	var IE = false;
+	if (navigator.appName == "Microsoft Internet Explorer"){IE = true}
+	var monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+	var refDate = "";
+	var today = "";
+	var usedToday = "";
+	var prevField = "";
+	var leftStr = "";
+	//if (floatTo == "right"){leftStr = (screen.width)-235+"px"}
+	if (floatTo == "right"){leftStr = "1400px"}
+	if (floatTo == "left"){leftStr = "0px"}
+	if (clickField.length > 0){for (t = 0; t < clickField.length; t++)
+		{clickField[t] = clickField[t].split(",")}}
+
+	function stayHome(){	
+
+		var nV = 0;
+		if(!document.body.scrollTop){nV = document.documentElement.scrollTop}
+		else {nV = document.body.scrollTop}
+		document.getElementById('nCalendar').style.top = nV+'px';
+		setTimeout("stayHome()",50);
+	}
+
+	function rewindM(){
+
+		refDate = new Date(refDate.getFullYear(),refDate.getMonth()-hopMonths,1)
+		createCalendar();
+	}
+
+	function forwardM(){
+
+		refDate = new Date(refDate.getFullYear(),refDate.getMonth()+hopMonths,1)
+		createCalendar();
+	}
+
+	function rewindY(){
+
+		refDate = new Date(refDate.getFullYear()-hopYears,refDate.getMonth(),1)
+		createCalendar();
+	}
+
+	function forwardY(){
+
+		refDate = new Date(refDate.getFullYear()+hopYears,refDate.getMonth(),1)
+		createCalendar();
+	}
+	
+	function prevM(){
+
+		refDate = new Date(refDate.getFullYear(),refDate.getMonth()-1,1)
+		createCalendar();
+	}
+	
+	function nextM(){
+
+		refDate = new Date(refDate.getFullYear(),refDate.getMonth()+1,1)
+		createCalendar();
+	}
+
+	function prevY(){
+
+		refDate = new Date(refDate.getFullYear()-1,refDate.getMonth(),1)
+		createCalendar();
+	}
+
+	function nextY(){
+
+		refDate = new Date(refDate.getFullYear()+1,refDate.getMonth(),1)
+		createCalendar();
+	}
+
+	function fillField(n){
+
+		if (usedToday != "" && refDate.getMonth() == today.getMonth() && refDate.getFullYear() == today.getFullYear()){usedToday.style.backgroundColor = "#ffff00"}
+		if (prevField != "" && prevField != usedToday){prevField.style.backgroundColor = "#ffffe0"}
+		var fillDate = refDate.getMonth()+1+"/"+n.lastChild.data+"/"+refDate.getFullYear();
+		fillDate = fillDate.replace(/^(\d{1}\/)/,"0$1").replace(/(\d{2}\/)(\d{1}\/)/,"$10$2")
+		for (i = 1; i < clickField.length+1; i++)
+			{
+			 if (document.getElementById('fieldBox'+i).checked)
+				{
+				 document.forms[0][clickField[i-1][0]].value = fillDate;
+				 document.getElementById('fieldBox'+i).checked = false;
+				 if (n.style.backgroundColor == '#ffff00'){usedToday = n}
+				 if (n.style.backgroundColor == 'rgb(255, 255, 0)'){usedToday = n}
+				 n.style.backgroundColor = "#90ee90";
+				 prevField = n;
+				}
+			}
+	}
+
+	//function createCalendar(){
+
+		document.getElementById('header').lastChild.data = monthNames[refDate.getMonth()]+" "+refDate.getFullYear();
+		var currEOM = new Date(refDate.getFullYear(),refDate.getMonth()+1,refDate.getDate()-refDate.getDate()).getDate();
+		var pageMap = document.getElementById('monthPage');
+		for (i=2; i<8; i++)
+			{
+			 for (n=0; n<7; n++)
+				{
+				 if (IE){pageMap.rows[i].cells[n].lastChild.data = " "}
+				 else {pageMap.rows[i].cells[n].lastChild.data = "-"}
+				 pageMap.rows[i].cells[n].style.backgroundColor = "#ffffe0";
+				 pageMap.rows[i].cells[n].style.cursor = "auto";
+				 }
+			}
+		var counter = 0;
+		var new_day = new Date(refDate.getFullYear(),refDate.getMonth(),1).getDay();
+		var new_month = refDate.getMonth()+1;
+		var new_year = refDate.getFullYear();
+		//var xf = call_link(new_month, counter, new_year)
+		
+		//function call_link(aa){
+			
+                       //location=aa;
+                //}
+
+		
+		var startDay = new Date(refDate.getFullYear(),refDate.getMonth(),1).getDay();
+		for (i=2; i<8; i++)
+			{
+			//function call_link(){
+                        //location.href='daily_runs_archive/'+new_month+'-'+new_day+'-'+new_year+'.html';
+                //}
+
+			 for (n=0; n<7; n++)
+				{
+
+				 if (i == 2 && n >= startDay)
+				 	{
+					 n1_day = counter++;
+					 //function call_link1(){
+						 //location.href='daily_runs_archive/'+new_month+'-'+n1_day+'-'+new_year+'.html';
+					 //}
+					 pageMap.rows[i].cells[n].lastChild.data = counter; 
+					 
+					 //location='https://ldas-jobs.ligo.caltech.edu/~hunter.gabbard/earthquake_mon/daily_runs_archive/'+new_month+'-'+counter+'-'+new_year+'.html';
+					 //pageMap.rows[i].cells[n].detail.getAttribute("'https://ldas-jobs.ligo.caltech.edu/~hunter.gabbard/earthquake_mon/daily_runs_archive/'+new_month+'-'+counter+'-'+new_year+'.html'"); 
+					
+					 //pageMap.rows[i].cells[n].location.href = "http://www.ligo.org";
+					 pageMap.rows[i].cells[n].onclick = "";
+					 pageMap.rows[i].cells[n].style.cursor = "pointer";
+					}
+				 if (i > 2 && i < 6) 
+					{
+					 n_day = counter++;
+					 //var new_month = refDate.getMonth()+1;
+                			 //var new_year = refDate.getFullYear();
+
+					 pageMap.rows[i].cells[n].lastChild.data = counter;
+
+					 pageMap.rows[i].cells[n].onclick = ""
+					 pageMap.rows[i].cells[n].style.cursor = "pointer";
+					}
+				//var new_day = counter;
+				 if (i == 6 && counter < currEOM)
+					{
+					 n2_day = counter++;
+					 //function call_link2(){
+                                                 //location.href='daily_runs_archive/'+new_month+'-'+n2_day+'-'+new_year+'.html';
+                                         //}
+
+					 pageMap.rows[i].cells[n].lastChild.data = counter;
+
+					 pageMap.rows[i].cells[n].onclick = ""
+					 pageMap.rows[i].cells[n].style.cursor = "pointer";
+					}
+				 if (i == 7 && counter < currEOM)
+					{
+					 document.getElementById('lastRow').style.display = "";
+					 n3_day = counter++;
+					 //function call_link3(){
+                                                 //location.href='daily_runs_archive/'+new_month+'-'+n3_day+'-'+new_year+'.html';
+                                         //}
+
+					 pageMap.rows[i].cells[n].lastChild.data = counter;
+
+					 pageMap.rows[i].cells[n].onclick = ""
+					 pageMap.rows[i].cells[n].style.cursor = "pointer";
+					}
+				}
+				 if (IE && i == 7)
+					{
+					 if (pageMap.rows[i].cells[0].lastChild.data == " ")
+						{document.getElementById('lastRow').style.display = "none"}
+					 }
+				 if (!IE && i == 7)
+					{
+					 if (pageMap.rows[i].cells[0].lastChild.data == "-")
+						{document.getElementById('lastRow').style.display = "none"}
+					 }
+				
+			}
+		if (today.getFullYear() == refDate.getFullYear() && today.getMonth() == refDate.getMonth() && hiLiteToday)
+			{
+			 for (i=2; i<8; i++)
+				{
+			 	 for (n=0; n<7; n++)
+					{
+					 var tmp = pageMap.rows[i].cells[n].lastChild.data;
+					 if (tmp == today.getDate())
+						{pageMap.rows[i].cells[n].style.backgroundColor = "#FFFF00"}
+					}
+				}
+			}
+	}
+
+	function insertRow(){
+
+		var isTable = document.getElementById('clickFields')
+		var index = isTable.rows.length;
+		var nextRow =  isTable.insertRow(index);
+		var isBox = nextRow.insertCell(0);
+		var isDesc = nextRow.insertCell(1);
+		var idStr = "fieldBox"+index;
+		isBox.innerHTML = "<input type='checkbox' id="+idStr+">";
+		isBox.style.width = "20px";
+		isDesc.innerHTML = clickField[index-1][1];
+	}
+
+	function buildClickFields(){
+
+		if (clickField.length == 0)
+			{
+			 document.getElementById('clickNotice').style.display = "none";
+			 document.getElementById('clickFields').style.display = "none";
+			}
+		else 	{
+			 for (r = 0; r <clickField.length; r++)
+				{insertRow()}
+			}
+	}
+
+	function buildSupport(){
+
+		var styleStr = "<style type='text/css'>.left {border-left:solid black 1px;border-right:solid black 1px;border-bottom:solid black 1px;text-align:center;width:27px}.other {border-right:solid black 1px;border-bottom:solid black 1px;text-align:center;width:27px}.btn {font-size:6pt;font-weight:bold;width:22px}.day {border-right:solid black 1px;border-bottom:solid black 1px;text-align:center;width:27px;font-family:arial;font-size:10pt;font-weight:bold}.leftDay {border-left:solid black 1px;border-right:solid black 1px;border-bottom:solid black 1px;text-align:center;width:27px;font-family:arial;font-size:10pt;font-weight:bold}<\/style>"
+		var tableStr = "<DIV id=nCalendar style='POSITION: absolute; TOP: 0px'><TABLE id=holder style='MARGIN: 10px; BACKGROUND-COLOR: #ffffe0' cellSpacing=0 cellPadding=0 align=center><TBODY><TR><TD><TABLE id=monthPage style='FONT-SIZE: 14pt' cellSpacing=0 cellPadding=3 width=189 border=0><TBODY><TR><TH id=header style='BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; BORDER-LEFT: black 1px solid; BORDER-BOTTOM: black 1px solid; FONT-FAMILY: times; BACKGROUND-COLOR: #ffe4b5' colSpan=7>&nbsp;<\/TH><\/TR><TR style='BACKGROUND-COLOR: #f0e68c'><TD class=leftDay>S<\/TD><TD class=day>M<\/TD><TD class=day>T<\/TD><TD class=day>W<\/TD><TD class=day>T<\/TD><TD class=day>F<\/TD><TD class=day>S<\/TD><\/TR><TR><TD class=left>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><\/TR><TR><TD class=left>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><\/TR><TR><TD class=left>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><\/TR><TR><TD class=left>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><\/TR><TR><TD class=left>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><\/TR><TR id=lastRow style='DISPLAY: none'><TD class=left>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><TD class=other>&nbsp;<\/TD><\/TR><TR><TD style='BORDER-RIGHT: black 1px solid; FONT-WEIGHT: bold; FONT-SIZE: 12pt; PADDING-BOTTOM: 5px; BORDER-LEFT: black 1px solid; PADDING-TOP: 5px; BORDER-BOTTOM: black 1px solid; BACKGROUND-COLOR: #87ceeb' align='center' colSpan=7><INPUT class=btn id=rwMonths onclick=rewindM() type=button value='<<'>&nbsp; <INPUT class=btn title=Previous onclick=prevM() type=button value='<'>&nbsp;Month&nbsp; <INPUT class=btn title=Next onclick=nextM() type=button value='>'>&nbsp; <INPUT class=btn id=fwMonths onclick=forwardM() type=button value='>>'> <\/TD><\/TR><TR><TD style='BORDER-RIGHT: black 1px solid; FONT-WEIGHT: bold; FONT-SIZE: 12pt; PADDING-BOTTOM: 5px; BORDER-LEFT: black 1px solid; PADDING-TOP: 5px; BORDER-BOTTOM: black 1px solid; BACKGROUND-COLOR: #87ceeb' align='center' colSpan=7><INPUT class=btn id=rwYears onclick=rewindY() type=button value='<<'>&nbsp; <INPUT class=btn title=Previous onclick=prevY() type=button value='<'><SPAN style='LETTER-SPACING: 1px'>&nbsp;&nbsp;Year<\/SPAN>&nbsp;&nbsp; <INPUT class=btn title=Next onclick=nextY() type=button value='>'>&nbsp; <INPUT class=btn id=fwYears onclick=forwardY() type=button value='>>'> <\/TD><\/TR><TR id=clickNotice><TH style='BORDER-RIGHT: black 1px solid; FONT-SIZE: 10pt; BORDER-LEFT: black 1px solid; FONT-FAMILY: arial; BACKGROUND-COLOR: #90ee90' colSpan=7>Click To Field: <\/TH><\/TR><\/TBODY><TABLE id=clickFields style='BORDER-RIGHT: black 1px solid; FONT-SIZE: 10pt; BORDER-LEFT: black 1px solid; WIDTH: 189px; BORDER-BOTTOM: black 1px solid; FONT-FAMILY: arial; BACKGROUND-COLOR: #7fffd4' cellSpacing=0 cellPadding=0><TBODY><TR><\/TR><\/TBODY><\/TABLE><\/TR><\/TBODY><\/TABLE><\/TD><\/TBODY><\/TABLE><\/DIV>"
+
+		document.write(styleStr);
+		document.write(tableStr);
+	}
+
+	function initCalendar(){
+
+		buildSupport();
+		document.getElementById('rwMonths').title = " -"+hopMonths+" ";
+		document.getElementById('fwMonths').title = " +"+hopMonths+" ";
+		document.getElementById('rwYears').title = " -"+hopYears+" ";
+		document.getElementById('fwYears').title = " +"+hopYears+" ";
+		today = new Date();
+		refDate = new Date(today.getFullYear(),today.getMonth()+defaultMonth,1)
+		createCalendar();
+		buildClickFields();
+		document.getElementById('nCalendar').style.left = leftStr;
+		stayHome();
+	}
+
+</script>
+<style type="text/css">
+
+	 body {background-color:#eae3c6;margin-top:60px}
+	 form {width:260px;height:1200px;margin:auto}
+	 fieldset {width:260px;background-color:#f0fff0;border:1px solid #87ceeb}
+	 legend {font-family:tahoma;font-size:10pt;font-weight:bold;color:#00008b;background-color:#87ceeb;padding-left:3px;padding-right:3px;margin-bottom:5px;letter-spacing:+1px}
+	 label {font-family:times;font-size:12pt;color:#00008b;padding:5px}
+	.dates {font-family:times;font-size:10pt;text-align:right}
+	
+</style>
+</head>
+
+	
+
+<!-- Keep the following line as the LAST line in the Body -->
+<script type="text/javascript"> initCalendar() </script>
+
+		
+	
+		
+		<h4> Information concerning the arrival times at LIGO Hanford, LIGO Livingston, GEO600 Hanover, Virgo Pisa: </h4>
+		<style>		
+		iframe {
+			z-index: -1;
+		
+		}
+		</style>
+		<iframe src="https://ldas-jobs.ligo.caltech.edu/~hunter.gabbard/earthquake_mon/html_pages/earthquakes.html" width="100%" height="800"></iframe>
+		<h1> <center>Terramon: A low-latency online earthquake monitoring system</center> </h1>
+		<p> Current Time: <script type="text/javascript">
+                tday=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
+                tmonth=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+
+                function GetClock(){
+                var d=new Date();
+                var nday=d.getDay(),nmonth=d.getMonth(),ndate=d.getDate(),nyear=d.getYear(),nhour=d.getHours(),nmin=d.getMinutes(),nsec=d.getSeconds(),ap;
+
+                if(nhour==0){ap=" AM";nhour=12;}
+                else if(nhour<12){ap=" AM";}
+                else if(nhour==12){ap=" PM";}
+                else if(nhour>12){ap=" PM";nhour-=12;}
+
+                if(nyear<1000) nyear+=1900;
+                if(nmin<=9) nmin="0"+nmin;
+                if(nsec<=9) nsec="0"+nsec;
+
+                document.getElementById('clockbox').innerHTML=""+tday[nday]+", "+tmonth[nmonth]+" "+ndate+", "+nyear+" "+nhour+":"+nmin+":"+nsec+ap+"";
+                }
+
+                window.onload=function(){
+                GetClock();
+                setInterval(GetClock,1000);
+                }
+                </script>
+                <div id="clockbox" border="5"></div></p>
+
+		 <h4> Daily archive of Terramon webpages can be found <a href="https://ldas-jobs.ligo.caltech.edu/~hunter.gabbard/earthquake_mon/daily_runs_archive/">here</a>: Daily archive of Terramon segments can be found <a href="https://ldas-jobs.ligo.caltech.edu/~hunter.gabbard/earthquake_mon/daily_veto_segments/">here</a>.</h4>
+
+		 <p> Guide to this webpage:</p>
+                <ul type="square">
+                        <li> This list gives expected arrival times of earthquakes at LSC/Virgo/GEO interferometers. </li>
+                        <li> Site updates once every 3 minutes to get the most recent data. </li>
+			<li> Screen will flash when earthquake causing likely lock loss is imminent to the observatory (only for llo right now). </li>
+                        <li> Earthquake times are also provided in GPS. </li>
+                        <li> If no data appears in table below try waiting one minute and then refresing. If problem persists please contact the system author below. </li>
+                        <li> Color indicates likelihood of appreciable seismic disturbance at that observatory: Green is good data quality, Yelow is potentially-reduced data quality, Orange is definitve reduced data quality, and Red is likely lock loss. Data quality indicators are based on recent seismic noise floor studies done for LLO by Christopher Buchanan found <a href="https://dcc.ligo.org/cgi-bin/private/DocDB/ShowDocument?docid=G1500516&version=">here</a>. </li>
+
+                        <li> Questions or comments should be addressed to Hunter Gabbard at hunter.gabbard@ligo.org </li>
+                </ul>
+	<img src="https://ldas-jobs.ligo.caltech.edu/~hunter.gabbard/earthquake_mon/Pswaves.gif" width=400px height=400px style="position: absolute; z-index: -1; margin-bottom: 0px; right: 200px;">
+
+		<br> </br>
+		
+	<div>
+		<fieldset width=600px>
+			<legend>
+			Terms:</legend>
+			<b>ifo:</b> Interferometer site.<br>
+			<b>R-wave velocity (micro m/s):</b> Velocity of earthquake induced on accelerometers at the site.<br>
+			<!--<b>Site Arrival Time:</b> Local R 3.5 (km/s) wave arrival time of earthquake at each observatory.<br>-->
+			<b>P-phase Arrival Time:</b> Arrival time of P waves at the site.<br>
+			<b>S-phase Arrival Time:</b> Arrival time of S waves at the site.<br>
+			<b>R-wave Arrival Time:</b> Arrival time of Rayleigh earthquake waves traveling along the surface and estimated using a velocity of 3.5 km/s.<br>   
+ 			<b>GPS Time:</b> Source time of earthquake.<br> 
+    			<b>Magnitude:</b> Magnitude at the source of the earthquake.<br> 
+			<b>EQ lat:</b> Latitude of the earthquake source. <br>
+			<b>EQ lon:</b> Longitude of the earthquake source. <br>
+			<b>EQ distance (km):</b> Distance between earthquake source and site.<br>
+			<b>GPS P-phase Arrival Time:</b> GPS Arrival time of P waves at the site in UTC.<br>
+			<b>GPS S-phase Arrival Time:</b> GPS Arrival time of S waves at the site in UTC.<br>
+			<b>GPS R-wave Arrival Time:</b> GPS Arrival time of Rayleigh waves at the site in UTC.<br>
+    		</fieldset>
+	</div>
+	<a name="Bot">
+	</body>
+	
+</html>
